@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Camera;
 using Events;
 using Player;
 using Player.ActionHandlers;
@@ -38,12 +39,14 @@ namespace Connection
             }
 
             _clickHandler = ClickHandler.Instance;
-            _clickHandler.SetDragEventHandlers(OnDragStart, OnDragEnd);
+            _clickHandler.AddDragEventHandlers(OnDragStart, OnDragEnd);
+
+            CameraMover.Instance.SetCameraBounds(_nodes);
         }
 
         private void OnDestroy()
         {
-            _clickHandler.ClearEvents();
+            _clickHandler.RemoveDragEventHandlers(OnDragStart, OnDragEnd);
         }
 
         private void StartConnecting(ColorNode colorNode)
